@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 public class Usuario {
 
@@ -16,8 +18,8 @@ public class Usuario {
     @Setter @Getter
     public String apellido;
 
-    //@Setter @Getter
-    //public LocalDateTime fechaInscripcion;
+    @Setter @Getter
+    public LocalDateTime fechaInscripcion;
 
     @Setter @Getter
     public double mensualidad;

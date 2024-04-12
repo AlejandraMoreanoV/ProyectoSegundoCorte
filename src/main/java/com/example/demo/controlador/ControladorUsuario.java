@@ -86,8 +86,8 @@ public class ControladorUsuario {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         Usuario u = servicioUsuario.actualizarUsuario(usuario);
-        if (usuario == null) {
-            return new ResponseEntity("Usuario no encontrado.", HttpStatus.NOT_FOUND);
+        if (u == null) {
+            return new ResponseEntity("Usuario no encontrado o no fue posible actualizarlo; revise los datos ingresados.", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }

@@ -4,6 +4,7 @@ import com.example.demo.modelo.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class ServicioUsuario implements IServicioUsuario {
             if (usuario.getId()==u.getId()
                     && usuario.getNombre().equalsIgnoreCase(u.getNombre())
                     && usuario.getApellido().equalsIgnoreCase(u.getApellido())
+                    && usuario.getFechaInscripcion()==u.getFechaInscripcion()
                     && usuario.getMensualidad()==u.getMensualidad()) {
                 return usuario;
             }
@@ -73,12 +75,19 @@ public class ServicioUsuario implements IServicioUsuario {
         Usuario usuario = buscarUsuario(u.getId());
         if (usuario == null) {
             return null;
-        } else {
+        } else if (!u.getNombre().trim().isEmpty()
+                && !u.getApellido().trim().isEmpty()
+                && u.getFechaInscripcion()!=null
+                && u.getFechaInscripcion().isAfter(LocalDateTime.of(2024, 4, 11, 23, 59))
+                && u.getMensualidad()>0
+            ){
             usuario.setNombre(u.getNombre());
             usuario.setApellido(u.getApellido());
-            //usuario.setFechaInscripcion(u.getFechaInscripcion());
+            usuario.setFechaInscripcion(u.getFechaInscripcion());
             usuario.setMensualidad(u.getMensualidad());
             return usuario;
+        } else {
+            return null;
         }
     }
 
