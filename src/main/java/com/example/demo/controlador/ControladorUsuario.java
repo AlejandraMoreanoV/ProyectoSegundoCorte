@@ -31,8 +31,17 @@ public class ControladorUsuario {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         Usuario u = servicioUsuario.crearUsuario(usuario);
-        if (u==null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("El ID o el usuario ya existe.");
+        if (usuario.getId()<= 0
+                || usuario.getNombre()==null
+                || usuario.getNombre().isEmpty()
+                || usuario.getApellido()==null
+                || usuario.getApellido().isEmpty()
+                || usuario.getFechaInscripcion()==null
+                || usuario.getMensualidad()<0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Información inválida, por favor corregir.");
+        } else if (u==null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El ID que intenta ingresar ya ha sido asignado.");
+            //return ResponseEntity.status(HttpStatus.CONFLICT).body("El ID o el usuario ya existe.");
         } else {
             return ResponseEntity.status(HttpStatus.CREATED).body(u);
         }
@@ -86,10 +95,19 @@ public class ControladorUsuario {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         Usuario u = servicioUsuario.actualizarUsuario(usuario);
-        if (u == null) {
+        if (usuario.getId()<= 0
+                || usuario.getNombre()==null
+                || usuario.getNombre().isEmpty()
+                || usuario.getApellido()==null
+                || usuario.getApellido().isEmpty()
+                || usuario.getFechaInscripcion()==null
+                || usuario.getMensualidad()<0) {
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Información inválida, por favor corregir.");
+        } else if (u == null) {
             return new ResponseEntity("Usuario no encontrado o no fue posible actualizarlo; revise los datos ingresados.", HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
+        //return new ResponseEntity<>(usuario, HttpStatus.OK);
+        return ResponseEntity.status(HttpStatus.OK).body(u);
     }
 
     @DeleteMapping(path = "/eliminarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)

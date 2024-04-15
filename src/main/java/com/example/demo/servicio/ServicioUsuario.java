@@ -1,6 +1,7 @@
 package com.example.demo.servicio;
 
 import com.example.demo.modelo.Usuario;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,15 @@ public class ServicioUsuario implements IServicioUsuario {
     @Override
     public Usuario crearUsuario(Usuario usuario) {
         //TO DO --> Verificar los atributos.
-        if (buscarUsuario(usuario.getId()) == null && buscarUsuario(usuario) == null) {
+        if (buscarUsuario(usuario.getId()) == null
+                && buscarUsuario(usuario) == null
+                && usuario.getId()>= 0
+                && usuario.getNombre()!=null
+                && !usuario.getNombre().isEmpty()
+                && usuario.getApellido()!=null
+                && !usuario.getApellido().isEmpty()
+                && usuario.getFechaInscripcion()!=null
+                && usuario.getMensualidad()>0) {
             listaUsuarios.add(usuario);
             return usuario;
         }
@@ -27,8 +36,7 @@ public class ServicioUsuario implements IServicioUsuario {
     @Override
     public Usuario buscarUsuario(Usuario u) {
         for (Usuario usuario:listaUsuarios) {
-            if (usuario.getId()==u.getId()
-                    && usuario.getNombre().equalsIgnoreCase(u.getNombre())
+            if (usuario.getNombre().equalsIgnoreCase(u.getNombre())
                     && usuario.getApellido().equalsIgnoreCase(u.getApellido())
                     && usuario.getFechaInscripcion()==u.getFechaInscripcion()
                     && usuario.getMensualidad()==u.getMensualidad()) {
@@ -75,16 +83,19 @@ public class ServicioUsuario implements IServicioUsuario {
         Usuario usuario = buscarUsuario(u.getId());
         if (usuario == null) {
             return null;
-        } else if (!u.getNombre().trim().isEmpty()
-                && !u.getApellido().trim().isEmpty()
-                && u.getFechaInscripcion()!=null
-                && u.getFechaInscripcion().isAfter(LocalDateTime.of(2024, 4, 11, 23, 59))
-                && u.getMensualidad()>0
-            ){
+        } else if (u.getId()>= 0
+                        && u.getNombre()!=null
+                        && !u.getNombre().isEmpty()
+                        && u.getApellido()!=null
+                        && !u.getApellido().isEmpty()
+                        && u.getFechaInscripcion()!=null
+                        && u.getMensualidad()>0){
             usuario.setNombre(u.getNombre());
             usuario.setApellido(u.getApellido());
             usuario.setFechaInscripcion(u.getFechaInscripcion());
             usuario.setMensualidad(u.getMensualidad());
+            eliminarUsuario(u.getId());
+            crearUsuario(usuario);
             return usuario;
         } else {
             return null;
@@ -97,7 +108,7 @@ public class ServicioUsuario implements IServicioUsuario {
         if (usuario == null) {
             return null;
         } else {
-            System.out.println("A");
+            //System.out.println("A");
             listaUsuarios.remove(buscarUsuario(id));
             return usuario;
         }
