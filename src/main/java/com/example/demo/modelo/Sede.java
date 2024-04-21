@@ -5,23 +5,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
-public class Usuario {
+public class Sede {
 
     @Setter @Getter
     public int id;
 
     @Setter @Getter
-    public String nombre;
+    public String ciudad;
 
     @Setter @Getter
-    public String apellido;
+    public String direccion;
 
     @Setter @Getter
-    public LocalDateTime fechaInscripcion;
+    public LocalDateTime fechaRegistro;
 
     @Setter @Getter
-    public double mensualidad;
+    public double m2;
+
+    @Setter @Getter
+    private List<Usuario> listaUsuarios;
 
 }

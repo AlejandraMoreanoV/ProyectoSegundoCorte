@@ -19,18 +19,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/controladorUsuario")
+@RequestMapping(value = "/usuario")
 public class ControladorUsuario {
 
     @Autowired
+    //private IServicioSede servicioSede;
     private IServicioUsuario servicioUsuario;
 
-    @PostMapping
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario, BindingResult result){
+    @PostMapping (path = "/{idSede}")
+    public ResponseEntity<?> crearUsuario(@PathVariable int idSede, @RequestBody Usuario usuario, BindingResult result){
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
-        Usuario u = servicioUsuario.crearUsuario(usuario);
         if (usuario.getId()<= 0
                 || usuario.getNombre()==null
                 || usuario.getNombre().isEmpty()
@@ -39,18 +39,20 @@ public class ControladorUsuario {
                 || usuario.getFechaInscripcion()==null
                 || usuario.getMensualidad()<0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Información inválida, por favor corregir.");
-        } else if (u==null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "El ID que intenta ingresar ya ha sido asignado.");
-            //return ResponseEntity.status(HttpStatus.CONFLICT).body("El ID o el usuario ya existe.");
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(u);
+            Usuario u = servicioUsuario.crearUsuario(idSede, usuario);
+            if (u == null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "El ID que intenta ingresar ya ha sido asignado.");
+            } else {
+                return ResponseEntity.status(HttpStatus.CREATED).body(u);
+            }
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Usuario> buscarUsuario(@PathVariable int id) {
+    @GetMapping (path = "/id/{idSede}/{idUsuario}")
+    public ResponseEntity<Usuario> buscarUsuarioId(@PathVariable int idSede, @PathVariable int idUsuario) {
         try {
-            Usuario u = servicioUsuario.buscarUsuario(id);
+            Usuario u = servicioUsuario.buscarUsuario(idSede, idUsuario);
             if (u == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(u);
             } else {
@@ -61,10 +63,24 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioNombre/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Usuario> buscarUsuario(@PathVariable String nombre) {
+    @GetMapping (path = "/nombre/{idSede}/{nombre}")
+    public ResponseEntity<Usuario> buscarUsuarioNombre(@PathVariable int idSede, @PathVariable String nombre) {
         try {
-            Usuario u = servicioUsuario.buscarUsuario(nombre);
+            Usuario usuario = servicioUsuario.buscarUsuario(idSede, nombre);
+            if (usuario == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(usuario);
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(usuario);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping (path = "/idNombre/{idSede}/{id}/{nombre}")
+    public ResponseEntity<Usuario> buscarUsuarioIdNombre(@PathVariable int idSede, @PathVariable int id, @PathVariable String nombre) {
+        try {
+            Usuario u = servicioUsuario.buscarUsuario(idSede, id, nombre);
             if (u == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(u);
             } else {
@@ -75,26 +91,11 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioIdNombre/{id}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Usuario> buscarUsuario(@PathVariable int id, @PathVariable String nombre) {
-        try {
-            Usuario u = servicioUsuario.buscarUsuario(id, nombre);
-            if (u == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(u);
-            } else {
-                return ResponseEntity.status(HttpStatus.OK).body(u);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping(path = "/actualizarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Usuario> actualizarUsuario (@RequestBody Usuario usuario, BindingResult result) {
+    @PutMapping (path = "/{idSede}")
+    public ResponseEntity<Usuario> actualizarUsuario (@PathVariable int idSede, @RequestBody Usuario usuario, BindingResult result) {
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
-        Usuario u = servicioUsuario.actualizarUsuario(usuario);
         if (usuario.getId()<= 0
                 || usuario.getNombre()==null
                 || usuario.getNombre().isEmpty()
@@ -103,31 +104,38 @@ public class ControladorUsuario {
                 || usuario.getFechaInscripcion()==null
                 || usuario.getMensualidad()<0) {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Información inválida, por favor corregir.");
-        } else if (u == null) {
-            return new ResponseEntity("Usuario no encontrado o no fue posible actualizarlo; revise los datos ingresados.", HttpStatus.NOT_FOUND);
+        } else {
+            Usuario u = servicioUsuario.actualizarUsuario(idSede, usuario);
+            if (u == null) {
+                return new ResponseEntity("Usuario no encontrado o no fue posible actualizarlo; revise los datos ingresados.", HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(u);
         }
-        //return new ResponseEntity<>(usuario, HttpStatus.OK);
-        return ResponseEntity.status(HttpStatus.OK).body(u);
     }
 
-    @DeleteMapping(path = "/eliminarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Usuario> eliminarUsuario (@RequestParam int id) {
-        Usuario u = servicioUsuario.eliminarUsuario(id);
-        if (u == null) {
-            return new ResponseEntity("Usuario no encontrado.", HttpStatus.NOT_FOUND);
+    @DeleteMapping (path = "/{idSede}/{idUsuario}")
+    public ResponseEntity<Usuario> eliminarUsuario (@PathVariable int idSede, @PathVariable int idUsuario) {
+        try {
+            Usuario u = servicioUsuario.eliminarUsuario(idSede, idUsuario);
+            if (u == null) {
+                return new ResponseEntity("Usuario no encontrado.", HttpStatus.NOT_FOUND);
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(u);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(u);
     }
 
-    @GetMapping(path = "/listarUsuarios", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Usuario>> listarUsuarios () {
-        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios());
+    @GetMapping (path = "/{idSede}")
+    public ResponseEntity<List<Usuario>> listarUsuarios (@PathVariable int idSede) {
+        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios(idSede));
         //return new ResponseEntity<>(servicioUsuario.listarUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/listarUsuarios/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Usuario>> listarUsuarios (@PathVariable String nombre) {
-        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios(nombre));
+    @GetMapping(path = "/filtrar/{idSede}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Usuario>> listarUsuarios (@PathVariable int idSede, @PathVariable String nombre) {
+        return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios(idSede, nombre));
         //return new ResponseEntity<>(servicioUsuario.listarUsuarios(), HttpStatus.OK);
     }
 

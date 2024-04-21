@@ -12,7 +12,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class ErrorMessage {
 
     private String code;
