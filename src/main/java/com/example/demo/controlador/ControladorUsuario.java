@@ -130,13 +130,11 @@ public class ControladorUsuario {
     @GetMapping (path = "/{idSede}")
     public ResponseEntity<List<Usuario>> listarUsuarios (@PathVariable int idSede) {
         return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios(idSede));
-        //return new ResponseEntity<>(servicioUsuario.listarUsuarios(), HttpStatus.OK);
     }
 
     @GetMapping(path = "/filtrar/{idSede}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Usuario>> listarUsuarios (@PathVariable int idSede, @PathVariable String nombre) {
         return ResponseEntity.status(HttpStatus.OK).body(servicioUsuario.listarUsuarios(idSede, nombre));
-        //return new ResponseEntity<>(servicioUsuario.listarUsuarios(), HttpStatus.OK);
     }
 
     private String formatMessage(BindingResult result){
