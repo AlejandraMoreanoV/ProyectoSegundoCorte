@@ -127,10 +127,10 @@ public class ServicioUsuario implements IServicioUsuario {
                     && !usuario.getApellido().isEmpty()
                     && usuario.getFechaInscripcion() != null
                     && usuario.getMensualidad() > 0) {
-                usuario.setNombre(u.getNombre());
-                usuario.setApellido(u.getApellido());
+                u.setNombre(usuario.getNombre());
+                u.setApellido(usuario.getApellido());
                 //usuario.setFechaInscripcion(u.getFechaInscripcion());
-                usuario.setMensualidad(u.getMensualidad());
+                u.setMensualidad(usuario.getMensualidad());
                 //eliminarUsuario(idSede, usuario.getId());
                 //crearUsuario(idSede, usuario);
                 return usuario;
