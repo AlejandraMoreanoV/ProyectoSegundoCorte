@@ -1,6 +1,7 @@
 package com.example.demo.servicio;
 
 import com.example.demo.modelo.Sede;
+import com.example.demo.modelo.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -74,10 +75,10 @@ public class ServicioSede implements IServicioSede {
                     && !s.getCiudad().isEmpty()
                     && s.getFechaRegistro() != null
                     && s.getM2() > 0) {
+                //eliminarSede(s.getId());
+                //crearSede(sede);
                 sede.setDireccion(s.getDireccion());
-                sede.setCiudad(s.getCiudad());
-                //sede.setFechaRegistro(s.getFechaRegistro());
-                //sede.setM2(s.getM2());
+                sede.setM2(s.getM2());
                 return sede;
         } else {
             return null;
@@ -89,8 +90,9 @@ public class ServicioSede implements IServicioSede {
         Sede sede = buscarSede(id);
         if (sede != null) {
             listaSedes.remove(sede);
+            return sede;
         }
-        return sede;
+        return null;
     }
 
     @Override

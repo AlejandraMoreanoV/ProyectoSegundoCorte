@@ -27,7 +27,7 @@ public class ControladorUsuario {
     private IServicioUsuario servicioUsuario;
 
     @PostMapping (path = "/{idSede}")
-    public ResponseEntity<?> crearUsuario(@PathVariable int idSede, @RequestBody Usuario usuario, BindingResult result){
+    public ResponseEntity<?> crearUsuario (@PathVariable int idSede, @RequestBody Usuario usuario, BindingResult result){
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
@@ -50,7 +50,7 @@ public class ControladorUsuario {
     }
 
     @GetMapping (path = "/id/{idSede}/{idUsuario}")
-    public ResponseEntity<Usuario> buscarUsuarioId(@PathVariable int idSede, @PathVariable int idUsuario) {
+    public ResponseEntity<Usuario> buscarUsuarioId (@PathVariable int idSede, @PathVariable int idUsuario) {
         try {
             Usuario u = servicioUsuario.buscarUsuario(idSede, idUsuario);
             if (u == null) {
@@ -64,7 +64,7 @@ public class ControladorUsuario {
     }
 
     @GetMapping (path = "/nombre/{idSede}/{nombre}")
-    public ResponseEntity<Usuario> buscarUsuarioNombre(@PathVariable int idSede, @PathVariable String nombre) {
+    public ResponseEntity<Usuario> buscarUsuarioNombre (@PathVariable int idSede, @PathVariable String nombre) {
         try {
             Usuario usuario = servicioUsuario.buscarUsuario(idSede, nombre);
             if (usuario == null) {
@@ -78,7 +78,7 @@ public class ControladorUsuario {
     }
 
     @GetMapping (path = "/idNombre/{idSede}/{id}/{nombre}")
-    public ResponseEntity<Usuario> buscarUsuarioIdNombre(@PathVariable int idSede, @PathVariable int id, @PathVariable String nombre) {
+    public ResponseEntity<Usuario> buscarUsuarioIdNombre (@PathVariable int idSede, @PathVariable int id, @PathVariable String nombre) {
         try {
             Usuario u = servicioUsuario.buscarUsuario(idSede, id, nombre);
             if (u == null) {

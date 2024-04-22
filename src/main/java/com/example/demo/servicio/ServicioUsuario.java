@@ -36,7 +36,7 @@ public class ServicioUsuario implements IServicioUsuario {
                     && !usuario.getApellido().isEmpty()
                     && usuario.getFechaInscripcion() != null
                     && usuario.getMensualidad() > 0
-                    && buscarUsuario(idSede, usuario.getId(), usuario.getNombre()) == null) {
+                    && buscarUsuario(idSede, usuario.getId()) == null) {
                 System.out.println("A");
                 sede.getListaUsuarios().add(usuario);
                 return usuario;
@@ -127,12 +127,12 @@ public class ServicioUsuario implements IServicioUsuario {
                     && !usuario.getApellido().isEmpty()
                     && usuario.getFechaInscripcion() != null
                     && usuario.getMensualidad() > 0) {
-                //usuario.setNombre(u.getNombre());
-                //usuario.setApellido(u.getApellido());
+                usuario.setNombre(u.getNombre());
+                usuario.setApellido(u.getApellido());
                 //usuario.setFechaInscripcion(u.getFechaInscripcion());
-                //usuario.setMensualidad(u.getMensualidad());
-                eliminarUsuario(idSede, usuario.getId());
-                crearUsuario(idSede, usuario);
+                usuario.setMensualidad(u.getMensualidad());
+                //eliminarUsuario(idSede, usuario.getId());
+                //crearUsuario(idSede, usuario);
                 return usuario;
             } else {
                 return null;

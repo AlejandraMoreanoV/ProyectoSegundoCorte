@@ -25,7 +25,7 @@ public class ControladorSede {
     public IServicioSede servicioSede;
 
     @PostMapping
-    public ResponseEntity<?> crearSede(@RequestBody Sede sede, BindingResult result){
+    public ResponseEntity<?> crearSede (@RequestBody Sede sede, BindingResult result){
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
@@ -49,7 +49,7 @@ public class ControladorSede {
     }
 
     @GetMapping (path = "/id/{id}")
-    public ResponseEntity<Sede> buscarSede(@PathVariable int id) {
+    public ResponseEntity<Sede> buscarSede (@PathVariable int id) {
         try {
             Sede s = servicioSede.buscarSede(id);
             if (s == null) {
@@ -77,7 +77,7 @@ public class ControladorSede {
     }
 
     @GetMapping (path = "/idCiudad/{id}/{ciudad}")
-    public ResponseEntity<Sede> buscarSede(@PathVariable int id, @PathVariable String ciudad) {
+    public ResponseEntity<Sede> buscarSede (@PathVariable int id, @PathVariable String ciudad) {
         try {
             Sede s = servicioSede.buscarSede(id, ciudad);
             if (s == null) {
@@ -114,11 +114,12 @@ public class ControladorSede {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<Sede> eliminarSede (@RequestParam int id) {
+    @DeleteMapping (path = "/{id}")
+    public ResponseEntity<Sede> eliminarSede (@PathVariable int id) {
         Sede u = servicioSede.eliminarSede(id);
         if (u == null) {
-            return new ResponseEntity("Sede no encontrada.", HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(u);
+            //return new ResponseEntity("Sede no encontrada.", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.status(HttpStatus.OK).body(u);
     }
@@ -128,7 +129,7 @@ public class ControladorSede {
         return ResponseEntity.status(HttpStatus.OK).body(servicioSede.listarSedes());
     }
 
-    @GetMapping(path = "/filtrar/{ciudad}")
+    @GetMapping (path = "/filtrar/{ciudad}")
     public ResponseEntity<List<Sede>> listarSedes (@PathVariable String ciudad) {
         return ResponseEntity.status(HttpStatus.OK).body(servicioSede.listarSedes(ciudad));
     }
