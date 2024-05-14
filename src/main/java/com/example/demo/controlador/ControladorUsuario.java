@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/controladorUsuario")
+@RequestMapping(value = "/usuario")
 public class ControladorUsuario {
 
     @Autowired
@@ -47,7 +47,8 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@GetMapping (path = "/buscarUsuarioId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping (path = "/buscarUsuarioId/{id}")
     public ResponseEntity<Usuario> buscarUsuario(@PathVariable int id) {
         try {
             Usuario u = servicioUsuario.buscarUsuario(id);
@@ -61,7 +62,8 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioNombre/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@GetMapping (path = "/buscarUsuarioNombre/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping (path = "/buscarUsuarioNombre/{nombre}")
     public ResponseEntity<Usuario> buscarUsuario(@PathVariable String nombre) {
         try {
             Usuario u = servicioUsuario.buscarUsuario(nombre);
@@ -75,7 +77,8 @@ public class ControladorUsuario {
         }
     }
 
-    @GetMapping (path = "/buscarUsuarioIdNombre/{id}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@GetMapping (path = "/buscarUsuarioIdNombre/{id}/{nombre}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping (path = "/buscarUsuarioIdNombre/{id}/{nombre}")
     public ResponseEntity<Usuario> buscarUsuario(@PathVariable int id, @PathVariable String nombre) {
         try {
             Usuario u = servicioUsuario.buscarUsuario(id, nombre);
@@ -89,7 +92,8 @@ public class ControladorUsuario {
         }
     }
 
-    @PutMapping(path = "/actualizarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PutMapping(path = "/actualizarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping
     public ResponseEntity<Usuario> actualizarUsuario (@RequestBody Usuario usuario, BindingResult result) {
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
@@ -110,7 +114,8 @@ public class ControladorUsuario {
         return ResponseEntity.status(HttpStatus.OK).body(u);
     }
 
-    @DeleteMapping(path = "/eliminarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@DeleteMapping(path = "/eliminarUsuario", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping
     public ResponseEntity<Usuario> eliminarUsuario (@RequestParam int id) {
         Usuario u = servicioUsuario.eliminarUsuario(id);
         if (u == null) {
