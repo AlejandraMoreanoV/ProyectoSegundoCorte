@@ -31,8 +31,8 @@ public class ControladorUsuario {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
         }
         Usuario u = servicioUsuario.crearUsuario(usuario);
-        if (usuario.getId()<= 0
-                || usuario.getNombre()==null
+        //if (usuario.getId()<= 0
+        if (usuario.getNombre()==null
                 || usuario.getNombre().isEmpty()
                 || usuario.getApellido()==null
                 || usuario.getApellido().isEmpty()
