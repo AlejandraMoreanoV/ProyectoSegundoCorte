@@ -12,7 +12,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ServicioUsuario implements IServicioUsuario {
+//public class ServicioUsuario implements IServicioUsuario {
+public class ServicioUsuario {
 
     //public List<Usuario> listaUsuarios = new ArrayList<>();
 
@@ -23,7 +24,7 @@ public class ServicioUsuario implements IServicioUsuario {
         return servicioSede.buscarSede(id);
     }
 
-    @Override
+    //@Override
     public Usuario crearUsuario(int idSede, Usuario usuario) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -45,7 +46,7 @@ public class ServicioUsuario implements IServicioUsuario {
         return null;
     }
 
-    @Override
+    //@Override
     public Usuario buscarUsuario(int idSede, Usuario usuario) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -63,7 +64,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public Usuario buscarUsuario(int idSede, int idUsuario) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -79,7 +80,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public Usuario buscarUsuario(int idSede, String nombre) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -95,7 +96,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public Usuario buscarUsuario(int idSede, int idUsuario, String nombre) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -111,7 +112,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public Usuario actualizarUsuario(int idSede, Usuario usuario) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -140,7 +141,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public Usuario eliminarUsuario(int idSede, int idUsuario) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -157,7 +158,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public List<Usuario> listarUsuarios(int idSede) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
@@ -167,7 +168,7 @@ public class ServicioUsuario implements IServicioUsuario {
         }
     }
 
-    @Override
+    //@Override
     public List<Usuario> listarUsuarios(int idSede, String nombre) {
         Sede sede = buscarSede(idSede);
         if (sede == null) {
