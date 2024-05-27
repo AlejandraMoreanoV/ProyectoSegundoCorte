@@ -1,6 +1,6 @@
 package com.example.demo.persistencia;
 
-import com.example.demo.modelo.Sede;
+import com.example.demo.modelo.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,29 +9,27 @@ import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name= "Usuario")
+@Table(name= "Sede")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntityUsuario {
+public class EntitySede {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer id;
-    public String nombre;
-    public String apellido;
-    @Column(name = "fecha_inscripcion")
+    public String ciudad;
+    public String direccion;
+    @Column(name = "fecha_registro")
     //Sólo column cuando tiene nombre diferente.
-    public LocalDateTime fechaInscripcion;
+    public LocalDateTime fechaRegistro;
     @NotNull
-    public Double mensualidad;
-    @Column(name = "id_sede")
-    public Integer idSede;
-    @ManyToOne
-    @JoinColumn(name = "id_sede", insertable = false, updatable = false)
-    public EntitySede sede;
+    public Double m2;
+    @OneToMany(mappedBy = "sede", fetch = FetchType.LAZY)
+    public List<EntityUsuario> listaUsuarios;
 
 }

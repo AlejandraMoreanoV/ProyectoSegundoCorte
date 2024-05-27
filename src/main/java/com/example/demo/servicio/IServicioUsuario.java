@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IServicioUsuario {
 
-    public Usuario crearUsuario(int id, Usuario usuario);
+    public Usuario crearUsuario(int idSede, Usuario usuario);
     public Usuario buscarUsuario(int idSede, Usuario usuario);
     public Usuario buscarUsuario(int idSede, int idUsuario);
     public Usuario buscarUsuario(int idSede, String nombre);

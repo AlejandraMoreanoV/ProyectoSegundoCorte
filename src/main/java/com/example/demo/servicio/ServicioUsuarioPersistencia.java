@@ -1,6 +1,7 @@
 package com.example.demo.servicio;
 
 import com.example.demo.mapper.IUsuarioMapper;
+import com.example.demo.modelo.Sede;
 import com.example.demo.modelo.Usuario;
 import com.example.demo.persistencia.EntityUsuario;
 import com.example.demo.persistencia.IRepositorioUsuario;
@@ -21,13 +22,13 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     //private final IUsuarioMapper iUsuarioMapper;
 
     @Override
-    public Usuario crearUsuario(Usuario usuario) {
-        return toDto(iRepositorioUsuario.save(toEntity(usuario)));
+    public Usuario crearUsuario(int idSede, Usuario usuario) {
+        return toDto(iRepositorioUsuario.save(toEntity(idSede, usuario)));
     }
 
     @Override
-    public Usuario buscarUsuario(Usuario usuario) {
-        Integer userId = toEntity(usuario).getId();
+    public Usuario buscarUsuario(int idSede, Usuario usuario) {
+        Integer userId = toEntity(idSede, usuario).getId();
         if (userId == null) {
             return null;
         }
@@ -39,7 +40,7 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public Usuario buscarUsuario(int id) {
+    public Usuario buscarUsuario(int idSede, int id) {
         Integer userId = Integer.valueOf(id);
         if (userId == null) {
             return null;
@@ -52,11 +53,11 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public Usuario buscarUsuario(String nombre) {
+    public Usuario buscarUsuario(int idSede, String nombre) {
         if (nombre.equals(' ')){
             return null;
         }
-        Optional<EntityUsuario> userOptional = iRepositorioUsuario.findByNombre(nombre);
+        Optional<EntityUsuario> userOptional = iRepositorioUsuario.findByNombre(idSede, nombre);
         if (userOptional.isEmpty()) {
             return null;
         }
@@ -64,8 +65,8 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public Usuario buscarUsuario(int id, String nombre) {
-        Usuario u = buscarUsuario(id);
+    public Usuario buscarUsuario(int idSede, int id, String nombre) {
+        Usuario u = buscarUsuario(idSede, id);
         if (u != null) {
             if (u.getNombre().equals(nombre)) {
                 return u;
@@ -75,23 +76,23 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public Usuario actualizarUsuario(Usuario usuario) {
-        Usuario u = buscarUsuario(usuario);
+    public Usuario actualizarUsuario(int idSede, Usuario usuario) {
+        Usuario u = buscarUsuario(idSede, usuario);
         if (u != null) {
-            return crearUsuario(usuario); //Actualiza si existe.
+            return crearUsuario(idSede, usuario); //Actualiza si existe.
         }
         return null;
     }
 
     @Override
-    public Usuario eliminarUsuario(int id) {
-        Usuario usuario = buscarUsuario(id);
+    public Usuario eliminarUsuario(int idSede, int id) {
+        Usuario usuario = buscarUsuario(idSede, id);
         iRepositorioUsuario.deleteById(id);
         return usuario;
     }
 
     @Override
-    public List<Usuario> listarUsuarios() {
+    public List<Usuario> listarUsuarios(int idSede) {
         List<EntityUsuario> entityList = iRepositorioUsuario.findAll();
         List<Usuario> userList = entityList.stream()
                 .map(this::toDto) // Convierte a DTO
@@ -100,7 +101,7 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public List<Usuario> listarUsuarios(String nombre) {
+    public List<Usuario> listarUsuarios(int idSede, String nombre) {
         List<EntityUsuario> entityList = iRepositorioUsuario.findAll();
         List<Usuario> userList = entityList.stream()
                 .filter(entity -> nombre.equals(entity.getNombre())) // Filtra por nombre
@@ -116,8 +117,8 @@ public class ServicioUsuarioPersistencia implements IServicioUsuario, IUsuarioMa
     }
 
     @Override
-    public EntityUsuario toEntity(Usuario usuario) {
-        EntityUsuario entityUsuario = new EntityUsuario(usuario.getId(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaInscripcion(), usuario.getMensualidad());
+    public EntityUsuario toEntity(int idSede, Usuario usuario) {
+        EntityUsuario entityUsuario = new EntityUsuario(usuario.getId(), usuario.getNombre(), usuario.getApellido(), usuario.getFechaInscripcion(), usuario.getMensualidad(), idSede, null);
         return entityUsuario;
     }
 }

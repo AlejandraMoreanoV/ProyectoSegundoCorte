@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class ServicioSede implements IServicioSede {
+//public class ServicioSede implements IServicioSede {
+public class ServicioSede {
 
     private static List<Sede> listaSedes = new ArrayList<>();
 
-    @Override
+    //@Override
     public Sede crearSede(Sede sede) {
         // Verificar los atributos.
         if (buscarSede(sede.getId()) == null
@@ -31,7 +32,7 @@ public class ServicioSede implements IServicioSede {
         return null;
     }
 
-    @Override
+    //@Override
     public Sede buscarSede(int id) {
         for (Sede sede : listaSedes) {
             if (sede.getId() == id) {
@@ -41,7 +42,7 @@ public class ServicioSede implements IServicioSede {
         return null;
     }
 
-    @Override
+    //@Override
     public Sede buscarSede(String ciudad) {
         // Considerar mayúsculas, minúsculas y vacíos.
         for (Sede sede : listaSedes) {
@@ -52,7 +53,7 @@ public class ServicioSede implements IServicioSede {
         return null;
     }
 
-    @Override
+    //@Override
     public Sede buscarSede(int id, String ciudad) {
         // Considerar mayúsculas, minúsculas y vacíos.
         for (Sede sede : listaSedes) {
@@ -63,7 +64,7 @@ public class ServicioSede implements IServicioSede {
         return null;
     }
 
-    @Override
+    //@Override
     public Sede actualizarSede(Sede s) {
         Sede sede = buscarSede(s.getId());
         if (sede == null) {
@@ -85,7 +86,7 @@ public class ServicioSede implements IServicioSede {
         }
     }
 
-    @Override
+    //@Override
     public Sede eliminarSede(int id) {
         Sede sede = buscarSede(id);
         if (sede != null) {
@@ -95,12 +96,12 @@ public class ServicioSede implements IServicioSede {
         return null;
     }
 
-    @Override
+    //@Override
     public List<Sede> listarSedes() {
         return listaSedes;
     }
 
-    @Override
+    //@Override
     public List<Sede> listarSedes(String ciudad) {
         List<Sede> listaEncontrados = new ArrayList<>();
         for (Sede sede : listaSedes) {

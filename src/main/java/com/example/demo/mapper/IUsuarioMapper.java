@@ -5,5 +5,6 @@ import com.example.demo.persistencia.EntityUsuario;
 
 public interface IUsuarioMapper {
     Usuario toDto (EntityUsuario entityUsuario);
-    EntityUsuario toEntity (Usuario usuario);
+    EntityUsuario toEntity (int idSede, Usuario usuario);
+
 }
